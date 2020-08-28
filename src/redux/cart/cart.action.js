@@ -7,3 +7,4 @@ export const addNewItem = (item) => ({
     type: CartActionTypes.ADD_ITEM,
     payload:item
 });
+

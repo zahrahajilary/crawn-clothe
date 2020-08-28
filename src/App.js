@@ -9,6 +9,9 @@ import {setCurrentUser} from "./redux/user/user.actions";
 import SingInAndSingUpPage from "./pages/sing-in-and-sing-up/sing-in-and-sing-up.component";
 import {createUserProfileDocument} from "./firebase/firbase.utils";
 import {auth} from "./firebase/firbase.utils";
+import {selectCurrentUser} from "./redux/user/user.selectors";
+import {createStructuredSelector} from "reselect";
+import CheckoutComponent from "./pages/checkout/Checkout.component";
 
 class App extends Component {
     unsubscribeFromAuth = null;
@@ -42,15 +45,16 @@ class App extends Component {
                     <Route path='/' exact={true} component={HomePage}/>
                     <Route path='/shop' exact={true} component={ShopPage}/>
                     <Route path='/singin' exact={true} component={SingInAndSingUpPage}
-                           render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SingInAndSingUpPage/>)}/>
+                           render={() => this.props.currentUser ? (<Redirect to='/'/>) : (<SingInAndSingUpPage/>)}/>
+                    <Route path='/checkout' exact component={CheckoutComponent}/>
                 </Switch>
             </div>
         );
     }
 }
 
-const mapStateToProps = ({user}) => ({
-    currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = (dispatch) => ({
