@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import './sing-in.style.scss'
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import {singInWithGoogle} from "../../firebase/firbase.utils";
+import {auth, singInWithGoogle} from "../../firebase/firbase.utils";
 
 class SingIn extends Component {
 
@@ -14,13 +14,19 @@ class SingIn extends Component {
         }
     }
 
-    handleSubmit = (event) => {
-        event.preventDefault();
+    handleSubmit = async (event) => {
+        const {email, password} = this.state;
+        try {
+            auth.signInWithEmailAndPassword(email, password)
 
-        this.setState({
-            email: '',
-            password: ''
-        })
+            this.setState({
+                email: '',
+                password: ''
+            })
+        } catch (error) {
+            console.error(error.message)
+        }
+        event.preventDefault();
     };
 
     handleChange = (event) => {
@@ -51,8 +57,8 @@ class SingIn extends Component {
                     />
 
                     <div className="buttons">
-                        <CustomButton type="submit" >Sing IN</CustomButton>
-                        <CustomButton onClick={singInWithGoogle} isGoogleSingIn >Sing IN With Google</CustomButton>
+                        <CustomButton type="submit">Sing IN</CustomButton>
+                        <CustomButton onClick={singInWithGoogle} isGoogleSingIn>Sing IN With Google</CustomButton>
                     </div>
 
                 </form>
